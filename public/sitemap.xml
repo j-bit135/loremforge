@@ -67,11 +67,6 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://loremforge.co.uk/subscribe</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
     <loc>https://loremforge.co.uk/privacy</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>

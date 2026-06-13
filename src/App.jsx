@@ -28,7 +28,6 @@ const TOOL_META = {
 const PAGE_META = {
   blog:        { path:"/blog",        title:"Developer & Design Blog — Tools, Guides & Deep Dives | LoremForge", desc:"Practical guides for frontend developers and designers. CSS, accessibility, performance, Git workflows and more." },
   advertising: { path:"/advertising", title:"Advertise on LoremForge — Reach Developers & Designers",            desc:"Reach frontend developers, UI/UX designers and product teams. Premium ad placements on LoremForge." },
-  subscribe:   { path:"/subscribe",   title:"Subscribe to the LoremForge Monthly Newsletter",                      desc:"Weekly developer hints, tips and tools straight to your inbox. Free forever." },
   privacy:     { path:"/privacy",     title:"Privacy Policy | LoremForge",                            desc:"LoremForge privacy policy. How we collect, use and protect your data." },
   about:       { path:"/about",       title:"About LoremForge — Built by Developers, for Developers",             desc:"LoremForge is a free placeholder content toolkit built by web developers and digital media professionals." },
 };
@@ -1097,39 +1096,6 @@ function LoremAboutPage({ onBack }) {
   );
 }
 
-function LoremSubscribePage({ onBack }) {
-  const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-  return (
-    <div>
-      <div style={{marginBottom:28}}>
-        <div style={{fontSize:11,color:GREEN,fontFamily:"DM Mono,monospace",letterSpacing:".1em",marginBottom:8,textTransform:"uppercase"}}>Subscribe</div>
-        <h1 style={{fontSize:26,fontWeight:600,color:"#1a1a1a",marginBottom:12,lineHeight:1.3}}>A monthly email for developers who build things</h1>
-        <p style={{fontSize:15,color:"#888",lineHeight:1.8}}>We send out a monthly email with hints, tips, and practical advice for developers and designers — covering frontend techniques, useful tools, workflow improvements, and the occasional deep dive. Concise, actionable, and worth the two minutes it takes to read.</p>
-      </div>
-      {!submitted ? (
-        <div className="card" style={{maxWidth:480}}>
-          <div style={{fontSize:13,color:"#888",marginBottom:20,lineHeight:1.7}}>Enter your email below and we'll add you to our monthly list. First Monday of every month, straight to your inbox — free, forever.</div>
-          <div style={{marginBottom:12}}>
-            <label>Your email address</label>
-            <input type="email" placeholder="you@yourcompany.com" value={email} onChange={e=>setEmail(e.target.value)} />
-          </div>
-          <button className="btn btn-full" onClick={()=>{ if(email.includes("@")) setSubmitted(true); }} disabled={!email.includes("@")}>
-            <i className="ti ti-mail"/> Subscribe — it's free
-          </button>
-          <p style={{fontSize:11,color:"#bbb",marginTop:10,textAlign:"center",fontFamily:"DM Mono,monospace"}}>No spam. Unsubscribe any time.</p>
-        </div>
-      ) : (
-        <div className="card" style={{textAlign:"center",padding:"32px 24px",maxWidth:480}}>
-          <i className="ti ti-circle-check" style={{fontSize:36,color:GREEN,display:"block",marginBottom:12}}/>
-          <div style={{fontSize:16,fontWeight:600,color:"#1a1a1a",marginBottom:8}}>You're in!</div>
-          <div style={{fontSize:13,color:"#888"}}>Thanks for subscribing. Your first edition lands next Monday.</div>
-        </div>
-      )}
-    </div>
-  );
-}
-
 function LoremBlogPage({ onBack, onNavigate }) {
   const [article, setArticle] = useState(null);
   usePushState(article ? `/blog/${article}` : '/blog');
@@ -1612,7 +1578,6 @@ function SiteFooter({ onNavigate }) {
   const links = [
     { label:"Blog",        icon:"ti-pencil",     page:"blog" },
     { label:"Advertising", icon:"ti-ad-2",        page:"advertising" },
-    { label:"Subscribe",   icon:"ti-mail",        page:"subscribe" },
     { label:"About Us",    icon:"ti-info-circle", page:"about" },
     { label:"Privacy Policy", icon:"ti-shield",      page:"privacy" },
   ];
@@ -1824,7 +1789,7 @@ export default function App() {
                   <div style={{ marginTop:24 }}>
                     {page==="blog"        && <LoremBlogPage key={page} onBack={handleBack} onNavigate={handleNav} />}
                     {page==="advertising" && <LoremAdvertisingPage onBack={handleBack} />}
-                    {page==="subscribe"   && <LoremSubscribePage onBack={handleBack} />}
+                    
                     {page==="about"       && <LoremAboutPage onBack={handleBack} />}
                     {page==="privacy"     && <LoremPrivacyPage onBack={handleBack} />}
                   </div>
