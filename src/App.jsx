@@ -63,7 +63,8 @@ const GREENBG = "#f0fdf4";
 
 // ── STYLES ─────────────────────────────────────────────────────────────
 const styles = `
-  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap');
+@import url('https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css');
+    @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap');
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { -webkit-text-size-adjust: 100%; }
   body, #root {
@@ -1323,7 +1324,14 @@ function SidebarContents({ activeTool, setActiveTool, onClose }) {
         <div style={{ padding:"16px 16px 10px", display:"flex", alignItems:"center", justifyContent:"space-between", borderBottom:"1.5px solid #e8e8e2" }}>
           <div style={{ display:"flex", alignItems:"center", gap:10 }}>
             <div style={{ width:26,height:26,background:GREEN,borderRadius:6,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0 }}>
-              <i className="ti ti-align-left" style={{ fontSize:14, color:"#fff" }} />
+              <svg width="14" height="12" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 10 Q2 9 3 9 L17 9 Q18 9 18 10 L17 12 L3 12 Z" fill="#fff"/>
+                <path d="M3 9.5 L1 11 L3 11 Z" fill="#fff"/>
+                <rect x="6" y="12" width="8" height="2" rx="0.5" fill="#fff"/>
+                <rect x="4" y="14" width="12" height="2.5" rx="1" fill="#fff"/>
+                <rect x="10" y="1" width="6" height="3.5" rx="1" fill="#fff" transform="rotate(-35 13 2.5)"/>
+                <rect x="12.5" y="3" width="2" height="6" rx="0.8" fill="#fff" transform="rotate(-35 13.5 6)"/>
+              </svg>
             </div>
             <div>
               <div style={{ fontFamily:"DM Mono,monospace",fontSize:13,fontWeight:500,color:"#1a1a1a",letterSpacing:".02em" }}>LoremForge</div>
@@ -1381,9 +1389,16 @@ export default function App() {
         {!isMobile && (
           <div style={{ borderBottom:"1.5px solid #e8e8e2", padding:"13px 28px", display:"flex", alignItems:"center", justifyContent:"space-between", background:"#fff", flexShrink:0, boxShadow:"0 1px 3px rgba(0,0,0,.04)" }}>
             <div style={{ display:"flex", alignItems:"center", gap:12, cursor:"pointer" }} onClick={handleBack}>
-              <div style={{ width:30, height:30, background:GREEN, borderRadius:7, display:"flex", alignItems:"center", justifyContent:"center" }}>
-                <i className="ti ti-align-left" style={{ fontSize:16, color:"#fff" }} />
-              </div>
+              <div style={{ width:30,height:30,background:GREEN,borderRadius:7,display:"flex",alignItems:"center",justifyContent:"center" }}>
+              <svg width="16" height="14" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 10 Q2 9 3 9 L17 9 Q18 9 18 10 L17 12 L3 12 Z" fill="#fff"/>
+                <path d="M3 9.5 L1 11 L3 11 Z" fill="#fff"/>
+                <rect x="6" y="12" width="8" height="2" rx="0.5" fill="#fff"/>
+                <rect x="4" y="14" width="12" height="2.5" rx="1" fill="#fff"/>
+                <rect x="10" y="1" width="6" height="3.5" rx="1" fill="#fff" transform="rotate(-35 13 2.5)"/>
+                <rect x="12.5" y="3" width="2" height="6" rx="0.8" fill="#fff" transform="rotate(-35 13.5 6)"/>
+              </svg>
+            </div>
               <div>
                 <div style={{ fontFamily:"DM Mono,monospace", fontSize:16, fontWeight:500, color:"#1a1a1a", letterSpacing:".02em" }}>LoremForge</div>
                 <div style={{ fontSize:10, color:"#bbb", letterSpacing:".1em", textTransform:"uppercase" }}>placeholder toolkit for developers</div>
@@ -1398,9 +1413,16 @@ export default function App() {
         {isMobile && (
           <div className="mobile-header" style={{ borderBottom:"1.5px solid #e8e8e2", padding:"12px 16px", display:"flex", alignItems:"center", justifyContent:"space-between", background:"#fff", flexShrink:0 }}>
             <div style={{ display:"flex", alignItems:"center", gap:10, cursor:"pointer" }} onClick={handleBack}>
-              <div style={{ width:26, height:26, background:GREEN, borderRadius:6, display:"flex", alignItems:"center", justifyContent:"center" }}>
-                <i className="ti ti-align-left" style={{ fontSize:14, color:"#fff" }} />
-              </div>
+              <div style={{ width:26,height:26,background:GREEN,borderRadius:6,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0 }}>
+              <svg width="14" height="12" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 10 Q2 9 3 9 L17 9 Q18 9 18 10 L17 12 L3 12 Z" fill="#fff"/>
+                <path d="M3 9.5 L1 11 L3 11 Z" fill="#fff"/>
+                <rect x="6" y="12" width="8" height="2" rx="0.5" fill="#fff"/>
+                <rect x="4" y="14" width="12" height="2.5" rx="1" fill="#fff"/>
+                <rect x="10" y="1" width="6" height="3.5" rx="1" fill="#fff" transform="rotate(-35 13 2.5)"/>
+                <rect x="12.5" y="3" width="2" height="6" rx="0.8" fill="#fff" transform="rotate(-35 13.5 6)"/>
+              </svg>
+            </div>
               <span style={{ fontFamily:"DM Mono,monospace", fontSize:14, fontWeight:500, color:"#1a1a1a" }}>LoremForge</span>
             </div>
             <div style={{ display:"flex", alignItems:"center", gap:10 }}>
