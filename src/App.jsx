@@ -1021,58 +1021,35 @@ function BottomAdUnit() {
 // ── STATIC PAGES ───────────────────────────────────────────────────────
 
 
-function LoremAdvertisingPage({ onBack }) {
+function PageWrapper({ onBack, children }) {
   return (
     <div>
-      <div style={{marginBottom:28}}>
-        <div style={{fontSize:11,color:GREEN,fontFamily:"DM Mono,monospace",letterSpacing:".1em",marginBottom:8,textTransform:"uppercase"}}>Advertising</div>
-        <h1 style={{fontSize:26,fontWeight:600,color:"#1a1a1a",marginBottom:12,lineHeight:1.3}}>Reach developers and designers who build things</h1>
-        <p style={{fontSize:15,color:"#888",lineHeight:1.8}}>LoremForge is used daily by frontend developers, UI/UX designers, full-stack engineers, and anyone who builds interfaces and needs realistic placeholder content fast. These are technically literate, tool-savvy professionals who know what they want — and act on it.</p>
-      </div>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(200px,1fr))",gap:12,marginBottom:28}}>
-        {[
-          {label:"Primary Audience",value:"Frontend & full-stack developers"},
-          {label:"Secondary Audience",value:"UI/UX designers & product teams"},
-          {label:"Geography",value:"Primarily UK-based"},
-          {label:"Ad Formats",value:"728×90 leaderboard, 320×50 mobile, 300×250 sidebar"},
-        ].map(item=>(
-          <div key={item.label} className="card" style={{padding:"14px 16px"}}>
-            <div style={{fontSize:10,color:"#aaa",letterSpacing:".08em",textTransform:"uppercase",fontFamily:"DM Mono,monospace",marginBottom:6}}>{item.label}</div>
-            <div style={{fontSize:13,color:"#555",lineHeight:1.5}}>{item.value}</div>
-          </div>
-        ))}
-      </div>
-      <div className="card" style={{marginBottom:20}}>
-        <div style={{fontSize:11,color:GREEN,fontFamily:"DM Mono,monospace",letterSpacing:".08em",marginBottom:12,textTransform:"uppercase"}}>Get in touch</div>
-        <p style={{fontSize:14,color:"#888",lineHeight:1.8,marginBottom:16}}>
-          We offer direct advertising placements on LoremForge — well suited to developer tools, SaaS products, design resources, hosting providers, coding courses, and any product that serves the developer and designer community. Enquiries are handled personally.
-        </p>
-        <div style={{display:"inline-flex",alignItems:"center",gap:10,background:GREENBG,border:`1.5px solid #bbf7d0`,borderRadius:5,padding:"10px 18px"}}>
-          <i className="ti ti-mail" style={{fontSize:15,color:GREEN}}/>
-          <a href="mailto:contact.loremforge@gmail.com" style={{fontFamily:"DM Mono,monospace",fontSize:13,color:GREEN,textDecoration:"none",letterSpacing:".03em"}}>contact.loremforge@gmail.com</a>
-        </div>
-        <p style={{fontSize:12,color:"#bbb",marginTop:12,fontStyle:"italic"}}>Contact us directly for rates, formats and availability.</p>
-      </div>
+      <button onClick={onBack} style={{ display:"inline-flex", alignItems:"center", gap:6, background:"transparent", border:"1.5px solid #e8e8e2", borderRadius:5, color:"#aaa", fontSize:12, fontFamily:"DM Mono,monospace", padding:"6px 14px", cursor:"pointer", marginBottom:24, transition:"all .15s" }}
+        onMouseEnter={e=>{e.currentTarget.style.borderColor=GREEN;e.currentTarget.style.color=GREEN;}}
+        onMouseLeave={e=>{e.currentTarget.style.borderColor="#e8e8e2";e.currentTarget.style.color="#aaa";}}>
+        <i className="ti ti-arrow-left" style={{fontSize:13}}/> Back to tools
+      </button>
+      {children}
     </div>
   );
 }
 
 function LoremAboutPage({ onBack }) {
   return (
-    <div>
+    <PageWrapper onBack={onBack}>
       <div style={{marginBottom:28}}>
         <div style={{fontSize:11,color:GREEN,fontFamily:"DM Mono,monospace",letterSpacing:".1em",marginBottom:8,textTransform:"uppercase"}}>About Us</div>
         <h1 style={{fontSize:26,fontWeight:600,color:"#1a1a1a",marginBottom:12,lineHeight:1.3}}>Built by people who've felt the friction</h1>
       </div>
       <div className="card" style={{marginBottom:16,lineHeight:1.9}}>
         <p style={{fontSize:14,color:"#777",marginBottom:16}}>
-          Our team has spent over a decade working across web development and digital media — building products, shipping interfaces, and supporting teams across most industries you can name. We've worked with startups finding their feet and enterprises managing complex digital estates. What connects all of it is time spent in the tools.
+          Our team has spent over a decade working across web development and digital media — building products, shipping interfaces, and supporting teams across most industries you can name. What connects all of it is time spent in the tools.
         </p>
         <p style={{fontSize:14,color:"#777",marginBottom:16}}>
-          Anyone who's built a UI knows the small, repetitive frustrations that add up: hunting down a Lorem Ipsum generator, getting something that outputs twelve identical paragraphs, needing dummy JSON that actually looks realistic, wanting placeholder images at a specific size without opening a design tool. None of these are big problems. But they're constant ones.
+          Anyone who's built a UI knows the small, repetitive frustrations that add up: hunting down a Lorem Ipsum generator, getting something that outputs twelve identical paragraphs, needing dummy JSON that actually looks realistic, wanting placeholder images at a specific size without opening a design tool.
         </p>
         <p style={{fontSize:14,color:"#777",marginBottom:16}}>
-          In 2026, we set out to consolidate the best of these everyday developer utilities into one well-designed, fast, and genuinely useful place. LoremForge is the result — eight tools covering the most common placeholder content needs, all AI-powered where that adds real value, and completely free to use.
+          In 2026, we set out to consolidate the best of these everyday developer utilities into one well-designed, fast, and genuinely useful place. LoremForge is the result — tools covering the most common placeholder content needs, all AI-powered where that adds real value, and completely free to use.
         </p>
         <p style={{fontSize:14,color:"#777"}}>
           We're continuing to add tools and refine what's here. If something's missing that you'd find useful, we'd genuinely like to know.
@@ -1092,343 +1069,102 @@ function LoremAboutPage({ onBack }) {
           </div>
         ))}
       </div>
-    </div>
+    </PageWrapper>
   );
 }
 
-function LoremBlogPage({ onBack, onNavigate }) {
+function LoremBlogPage({ onBack }) {
   const [article, setArticle] = useState(null);
-  usePushState(article ? `/blog/${article}` : '/blog');
-  useEffect(() => {
-    if (article) {
-      const post = posts.find(p => p.slug === article);
-      if (post) {
-        document.title = post.title + ' | LoremForge';
-        let m = document.querySelector('meta[name="description"]');
-        if (!m) { m = document.createElement('meta'); m.name = 'description'; document.head.appendChild(m); }
-        m.content = post.intro;
-        let c = document.querySelector('link[rel="canonical"]');
-        if (!c) { c = document.createElement('link'); c.rel = 'canonical'; document.head.appendChild(c); }
-        c.href = 'https://loremforge.co.uk/blog/' + article;
-      }
-    }
-  }, [article]);
-  usePushState(article ? `/blog/${article}` : '/blog');
   const posts = [
     {
       slug:"history-of-lorem-ipsum",
       title:"The Surprisingly Long History of Lorem Ipsum",
+      date:"2 June 2026",
       readTime:"7 min read",
       category:"Design & Development",
-      intro:"You've pasted it into a thousand wireframes without a second thought. But where did Lorem Ipsum actually come from — and why has a scrambled passage of ancient Latin become the universal language of placeholder content?",
-      body:`Walk into any design studio, open any UI mockup, inspect any prototype in progress, and there it is. Lorem ipsum dolor sit amet, consectetur adipiscing elit. It's so ubiquitous in the world of web development and design that most people who use it daily have never once wondered what it means, where it came from, or why it's Latin.
-
-The answer, it turns out, is more interesting than you'd expect.
-
-THE ANCIENT SOURCE
-
-Lorem ipsum is derived from De Finibus Bonorum et Malorum — a philosophical treatise written by the Roman orator and statesman Marcus Tullius Cicero in 45 BC. The title translates roughly as "On the Ends of Good and Evil", and the work is a detailed exploration of the ethical theories of the major ancient philosophical schools — Epicureanism, Stoicism, and the philosophy of Plato.
-
-The original Latin passage that Lorem Ipsum is drawn from reads: "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit" — which translates as "Nor is there anyone who loves pain itself, since it is pain and thus wants to obtain it."
-
-The familiar Lorem ipsum text is a scrambled, truncated, and altered version of this passage. Words have been rearranged, removed, or slightly modified to make the text flow as convincing filler without being directly readable as coherent Latin. It reads like real text at a glance — and that, as it turns out, was entirely the point.
-
-THE TYPESETTING ERA
-
-The use of Lorem Ipsum as placeholder text is most often traced back to the 1500s, when an unknown printer scrambled the passage to use as type specimen text. In the days of movable type, printers needed to demonstrate typefaces, layouts, and spacing without the distraction of meaningful content. A reader looking at a type specimen needed to evaluate the letterforms and their arrangement — not get drawn into reading the actual words.
-
-Lorem ipsum served this purpose perfectly. It had the rhythm and visual texture of real Latin prose. The word lengths varied naturally. The letter distribution looked authentic. And crucially, it was unfamiliar enough to most readers that it wouldn't trigger the instinct to actually read it. It was designed to be seen, not read.
-
-The practice continued largely unchanged through centuries of printing and typesetting. When hot metal typesetting gave way to phototypesetting in the 1960s and 1970s, Lorem ipsum came with it. Letraset — the dry-transfer lettering sheets used by designers before desktop publishing — included Lorem ipsum on their sheets as standard placeholder text.
-
-THE DESKTOP PUBLISHING REVOLUTION
-
-Lorem ipsum's transition into the digital world happened in the 1980s, largely driven by Aldus PageMaker — the pioneering desktop publishing software that first brought professional-grade layout tools to personal computers. Aldus included Lorem ipsum as default placeholder text in PageMaker's template sheets, and from that moment, its adoption became effectively universal.
-
-Every designer who trained on PageMaker learned to reach for Lorem ipsum as a matter of instinct. When Adobe later acquired Aldus and developed InDesign as the successor to PageMaker, Lorem ipsum came along. When the web design industry grew out of desktop publishing conventions in the 1990s, Lorem ipsum came with it.
-
-By the time the first Lorem ipsum generator websites appeared in the early 2000s, the text had already been in continuous professional use for the better part of five centuries. The web just made it easier to get more of it.
-
-THE MODERN ERA AND ITS ALTERNATIVES
-
-The standard Lorem ipsum text runs to a few hundred words — not enough for every design need. This spawned a small industry of Lorem ipsum generators offering extended versions, random variations, and increasingly creative alternatives.
-
-Today the landscape has expanded considerably. Hipster ipsum offers artisanal, craft-focused filler. Corporate ipsum delivers the synergistic buzzword soup of business communication. Developer-flavoured variants use technical jargon as their raw material. JSON placeholder APIs generate structured dummy data. The underlying principle — convincing filler that doesn't distract from the design — remains exactly what Cicero's rearranged prose offered to that anonymous 16th-century typesetter.
-
-The specific words have always mattered less than what they do: hold space, simulate content weight, and let the design speak for itself. Two thousand years after Cicero wrote De Finibus, his words are still doing exactly that — just in slightly more scrambled form, in considerably more browser tabs.`,
+      intro:"You have pasted it into a thousand wireframes without a second thought. But where did Lorem Ipsum actually come from - and why has a scrambled passage of ancient Latin become the universal language of placeholder content?",
+      body:"Lorem ipsum is derived from De Finibus Bonorum et Malorum, a philosophical treatise written by Marcus Tullius Cicero in 45 BC. The original passage translates as: Nor is there anyone who loves pain itself, since it is pain and thus wants to obtain it.\n\nThe familiar Lorem ipsum text is a scrambled, altered version of this passage. It was used by an unknown printer in the 1500s as type specimen text to demonstrate typefaces without distracting readers with meaningful content.\n\nTHE TYPESETTING ERA\n\nLorem ipsum served this purpose perfectly. It had the rhythm and visual texture of real Latin prose. Word lengths varied naturally. And crucially, it was unfamiliar enough that it would not trigger the instinct to actually read it. It was designed to be seen, not read.\n\nTHE DESKTOP PUBLISHING REVOLUTION\n\nLorem ipsum moved into the digital world in the 1980s through Aldus PageMaker, the pioneering desktop publishing software. From that moment its adoption became effectively universal.\n\nTHE MODERN ERA\n\nToday the landscape has expanded considerably. Hipster ipsum offers artisanal filler. Corporate ipsum delivers buzzword soup. Developer variants use technical jargon. JSON placeholder APIs generate structured dummy data.\n\nTwo thousand years after Cicero wrote De Finibus, his words are still holding space in browser tabs across the world.",
     },
+    ,
     {
       slug:"why-developers-use-lorem-ipsum",
-      title:"Why Developers Use Lorem Ipsum — and When You Should Use Something Else",
+      title:"Why Developers Use Lorem Ipsum and When You Should Use Something Else",
+      date:"3 June 2026",
       readTime:"5 min read",
       category:"Development",
       intro:"Lorem ipsum is everywhere in development and design. But it is not always the right choice. Here is when it helps, when it hurts, and what the alternatives are.",
-      body:`Lorem ipsum is so deeply embedded in the web development workflow that most developers reach for it automatically, without stopping to ask whether it is actually the right tool for the situation. Most of the time it is. But not always — and understanding when to use it and when not to is a small distinction that makes a meaningful difference to output quality.
-
-WHY LOREM IPSUM EXISTS
-
-The purpose of placeholder text is to separate the evaluation of design from the distraction of content. When a designer is reviewing a layout, or a developer is testing component rendering, readable meaningful text introduces cognitive noise. The eye is drawn to words with meaning. Opinions form about content that was never the point of the exercise. Lorem ipsum short-circuits this by providing text that looks like language but does not function as it.
-
-This is the core use case and it is a genuinely good one. For any situation where you need to evaluate visual design, component spacing, typography, or layout behaviour without real content available, Lorem ipsum does exactly what it should.
-
-WHEN LOREM IPSUM IS NOT THE RIGHT CHOICE
-
-The problems arise when Lorem ipsum is used as a permanent substitute for thinking about content, rather than a temporary placeholder for when content is not yet available.
-
-The most common example is in component design. If you are building a card component that will display a user name and a short bio, using generic Lorem ipsum obscures important questions: how does the component handle a very long name? What happens when the bio is two sentences versus eight? Does truncation work correctly? Does the layout break when real-world content variation is introduced? Lorem ipsum, with its predictable word lengths and consistent paragraph density, will hide all of these edge cases until they surface in production.
-
-For these situations, realistic dummy data is far more useful. Names, email addresses, product descriptions, and prices that reflect actual data characteristics will stress-test your components in a way that Lorem ipsum cannot.
-
-REALISTIC ALTERNATIVES FOR DIFFERENT CONTEXTS
-
-For user data — names, emails, job titles, addresses — a fake data generator that produces realistic values is always preferable to Lorem ipsum when testing data-driven interfaces. The visual and functional difference between a table populated with realistic names and one populated with Lorem ipsum fragments is significant when evaluating whether the design actually works.
-
-For product copy, the best alternative is often a small set of real or near-real examples. Writing three or four realistic product descriptions takes ten minutes and produces a far more accurate picture of how a product listing will look in production than any generated text can.
-
-For structural content like legal pages, about sections, and blog posts, Lorem ipsum is fine precisely because the content itself is not what is being evaluated — only the typographic presentation and layout behaviour.
-
-THE PRACTICAL RULE
-
-Use Lorem ipsum when you are evaluating design and layout and content is genuinely not available yet. Use realistic placeholder data when you are building components that will render real variable content and you need to understand how the component behaves under real conditions. The distinction is simple but applying it consistently produces noticeably better work.`,
+      body:"Lorem ipsum is so deeply embedded in the web development workflow that most developers reach for it automatically. Most of the time it is the right choice. But not always.\n\nWHY LOREM IPSUM EXISTS\n\nThe purpose of placeholder text is to separate the evaluation of design from the distraction of content. When a designer is reviewing a layout readable meaningful text introduces cognitive noise. Lorem ipsum short-circuits this by providing text that looks like language but does not function as it.\n\nWHEN IT IS NOT THE RIGHT CHOICE\n\nThe problems arise in component design. If you are building a card that displays a user name and bio, Lorem ipsum hides important questions: how does the component handle a very long name? What happens when the bio is eight sentences? Does truncation work correctly? Lorem ipsum with its predictable word lengths will hide all these edge cases until they surface in production.\n\nREALISTIC ALTERNATIVES\n\nFor user data - names, emails, job titles - a fake data generator that produces realistic values is always preferable when testing data-driven interfaces. For product copy, a small set of real examples takes ten minutes and produces a far more accurate picture than any generated text.\n\nTHE PRACTICAL RULE\n\nUse Lorem ipsum when evaluating design and layout and content is not yet available. Use realistic placeholder data when building components that will render real variable content.",
     },
     {
       slug:"best-placeholder-image-services-2026",
       title:"The Best Placeholder Image Services for Web Development in 2026",
+      date:"4 June 2026",
       readTime:"5 min read",
-      category:"Design & Development",
+      category:"Design and Development",
       intro:"Not all placeholder image services are equal. Here is a practical comparison of the main options, what each one is best for, and when to use which.",
-      body:`Every frontend developer has needed a placeholder image at some point — a stand-in for content that does not exist yet, sized correctly and ready to drop into a layout without breaking anything. The options have multiplied considerably over the years. Here is a clear comparison of the most useful ones available in 2026.
-
-LOREM PICSUM
-
-Lorem Picsum (picsum.photos) is the most widely used placeholder image service and for good reason. It serves real photographs from a curated collection, sized to your exact pixel dimensions, via a simple URL structure: https://picsum.photos/400/300 returns a random 400x300 image.
-
-The killer feature is seeded images. Adding a seed parameter — https://picsum.photos/seed/myapp/400/300 — returns the same image every time for that seed value. This means your layout stays visually consistent across page refreshes and test runs, which makes it far more useful for design review than random images that change on every reload.
-
-Picsum also supports greyscale and blur filters via URL parameters, which is occasionally useful for specific design contexts. It is the right default choice for most situations.
-
-PLACEHOLD.CO
-
-Placehold.co takes a different approach — it generates flat colour placeholder images with the dimensions displayed as text in the centre. A request to https://placehold.co/400x300 returns a grey rectangle with "400x300" written on it.
-
-This is less visually interesting than Picsum but serves a specific purpose well: when you need to make image dimensions immediately legible in a layout for review purposes. It supports custom background and text colours via URL parameters and requires no third-party photography, which makes it suitable for use in environments with strict content policies.
-
-VIA PLACEHOLDER
-
-Via.placeholder.com works similarly to Placehold.co — solid colour backgrounds with dimension labels. It is the older of the two services and slightly less flexible in terms of customisation options, but reliable and widely supported.
-
-WHEN TO USE EACH
-
-For general UI development and design review where visual quality matters, Lorem Picsum with a fixed seed is the clear choice. The realistic photography produces a much more accurate impression of how a finished interface will look.
-
-For technical documentation, component libraries, and design systems where clarity of dimensions is more important than visual realism, Placehold.co is better — the labelled dimensions make it immediately clear what space is allocated for imagery.
-
-For any situation where you need predictable, dependency-free placeholders that will work in any environment, either of the solid-colour services is the safer choice since they do not rely on third-party photograph collections.
-
-A NOTE ON PRODUCTION
-
-All of these services are development and design tools. None of them should be referenced in production code — both because the services can be unavailable or slow, and because real content should always replace placeholder content before anything ships. Placeholder images in a live product are a sign of an incomplete build, and search engines and accessibility tools will treat missing meaningful images accordingly.`,
+      body:"Every frontend developer has needed a placeholder image at some point - a stand-in for content that does not exist yet, sized correctly and ready to drop into a layout.\n\nLOREM PICSUM\n\nLorem Picsum (picsum.photos) is the most widely used placeholder image service. It serves real photographs sized to your exact pixel dimensions via a simple URL: https://picsum.photos/400/300 returns a random 400x300 image.\n\nThe killer feature is seeded images. Adding a seed parameter returns the same image every time for that seed value, keeping your layout visually consistent across page refreshes.\n\nPLACEHOLD.CO\n\nPlacehold.co generates flat colour placeholder images with dimensions displayed as text in the centre. This is less visually interesting than Picsum but serves a specific purpose well: when you need to make image dimensions immediately legible in a layout for review purposes.\n\nWHEN TO USE EACH\n\nFor general UI development where visual quality matters, Lorem Picsum with a fixed seed is the clear choice. For technical documentation and component libraries where clarity of dimensions matters more than visual realism, Placehold.co is better.\n\nA NOTE ON PRODUCTION\n\nAll placeholder image services are development tools only. None should be referenced in production code.",
     },
     {
       slug:"json-placeholder-data-guide",
-      title:"JSON Placeholder Data — A Developer Guide to Realistic Dummy Data",
+      title:"JSON Placeholder Data - A Developer Guide to Realistic Dummy Data",
+      date:"5 June 2026",
       readTime:"6 min read",
       category:"Development",
-      intro:"Generic placeholder JSON is everywhere in tutorials and demos. But realistic dummy data — structured and formatted the way production data actually looks — is far more useful when building real interfaces. Here is why it matters and how to generate it effectively.",
-      body:`There is a gap between the JSON that appears in most development tutorials and the JSON that real applications actually work with. Tutorial JSON looks like this: name: "John Doe", email: "john@example.com", age: 30. Real application data looks like this: name: "Priya Ramasubramanian", email: "p.ramasubramanian@northbridgepartners.co.uk", created_at: "2024-11-03T09:17:42Z", subscription_tier: "pro", last_login_ip: "82.45.201.17".
-
-The difference is not just cosmetic. The way you build and test components changes significantly based on the realistic characteristics of the data they will receive.
-
-WHY REALISTIC DATA STRUCTURE MATTERS
-
-Consider building a user table component. With tutorial-style dummy data, every name fits neatly in a cell, every email address is roughly the same length, and nothing breaks. With realistic data, you immediately encounter the questions that actually matter in production: how does the table handle a name with thirty-two characters? What happens when an email address causes the column to overflow on a 1024px viewport? How does the component behave when last_login is null because the user has never logged in?
-
-These are not edge cases — they are normal conditions in production data. Building against realistic dummy data forces you to address them during development rather than discovering them after launch.
-
-THE COMPONENTS OF REALISTIC JSON
-
-Realistic JSON dummy data shares several characteristics with real production data. IDs are UUIDs rather than sequential integers — because almost no production system uses simple integer IDs any more, and UUID formatting affects column width and copy-paste behaviour in ways that matter. Dates are ISO 8601 formatted strings with timezone offsets, not simplified date-only values. Names reflect realistic cultural and linguistic diversity rather than a parade of Anglo-Saxon names. Email addresses use realistic domain patterns including corporate domains, not just gmail.com.
-
-Numerical values have realistic distributions — prices are not round numbers, ratings are not always five stars, counts are not always small integers.
-
-STRUCTURING NESTED DATA
-
-Real application JSON is rarely flat. A product object might contain a nested seller object, an array of category tags, a reviews array with nested reviewer objects, and a variants array with stock levels per variant. Building components against flat placeholder data and then switching to nested production data mid-build is a common source of refactoring work that could have been avoided.
-
-When generating dummy JSON for development purposes, match the nesting depth and structure of your actual data schema as closely as possible, even if the values themselves are placeholder. The structure is what your component logic depends on — the values are what the user sees.
-
-USING JSON PLACEHOLDER DATA EFFECTIVELY
-
-The most efficient approach is to generate a realistic set of dummy data once at the start of a project, based on your actual data schemas, and reuse it consistently throughout development. This produces visual consistency across component development sessions, makes design reviews more meaningful, and ensures that edge cases surface during development rather than in production.
-
-For rapid prototyping where schemas are not yet defined, a generated set of plausible user, product, or content objects is far more useful than hand-written tutorial data — both because it is faster to produce and because the realistic values give a much more accurate impression of how the finished interface will look and behave.`,
+      intro:"Generic placeholder JSON is everywhere in tutorials. But realistic dummy data structured the way production data actually looks is far more useful when building real interfaces.",
+      body:"There is a gap between the JSON in most tutorials and the JSON real applications work with. Tutorial JSON: name: John Doe, email: john@example.com, age: 30. Real data: name: Priya Ramasubramanian, email: p.ramasubramanian@northbridgepartners.co.uk, created_at: 2024-11-03T09:17:42Z.\n\nWHY REALISTIC DATA STRUCTURE MATTERS\n\nWith tutorial-style dummy data, every name fits neatly in a cell and nothing breaks. With realistic data you immediately encounter the questions that matter in production: how does the table handle a thirty-two character name? What happens when an email causes column overflow on a narrow viewport? How does the component behave when last_login is null because the user has never logged in?\n\nTHE COMPONENTS OF REALISTIC JSON\n\nRealistic JSON shares several characteristics with real production data. IDs are UUIDs rather than sequential integers. Dates are ISO 8601 formatted strings with timezone offsets. Names reflect realistic cultural diversity. Email addresses use realistic domain patterns including corporate domains.\n\nSTRUCTURING NESTED DATA\n\nReal application JSON is rarely flat. A product object might contain a nested seller object, category tags array, and reviews with nested reviewer objects. Building against flat placeholder data and then switching to nested production data mid-build is a common source of avoidable refactoring.\n\nUSING JSON PLACEHOLDER DATA EFFECTIVELY\n\nGenerate a realistic set of dummy data once at the start of a project based on your actual schemas and reuse it throughout development. This produces visual consistency across component sessions and ensures edge cases surface during development rather than in production.",
     }
-,
+    ,
     {
       slug:"css-design-tokens-guide",
-      title:"CSS Design Tokens — What They Are and Why Every Project Needs Them",
+      title:"CSS Design Tokens - What They Are and Why Every Project Needs Them",
+      date:"6 June 2026",
       readTime:"6 min read",
       category:"Frontend Development",
-      intro:"Design tokens are the single source of truth for your visual language — colours, spacing, typography, and more. Here is what they are, how they work, and why adopting them early saves significant pain later.",
-      body:`If you have ever worked on a project where the same shade of blue is defined in four different places, or where changing the base font size requires hunting through dozens of CSS files, you have experienced the problem that design tokens solve. They are one of those concepts that seems abstract until you have worked on a project without them, at which point the value becomes immediately obvious.
-
-WHAT DESIGN TOKENS ARE
-
-A design token is a named variable that stores a single design decision. Instead of writing color: #1a56db in your CSS, you write color: var(--color-primary). The token --color-primary is defined once, in one place, and referenced everywhere it is used.
-
-The power is not just in the variable itself — it is in what the token represents. A design token is not just a CSS variable. It is a named, documented, intentional design decision that exists independently of any specific implementation. The same token can be expressed in CSS custom properties, JavaScript objects, iOS Swift variables, or Android XML resources. It is the design system's vocabulary, platform-agnostic.
-
-THE THREE TIERS OF TOKENS
-
-A well-structured token system has three tiers. Global tokens are the raw values — --color-blue-600: #1a56db. These are the palette, not yet assigned meaning. Alias tokens assign semantic meaning to global tokens — --color-interactive: var(--color-blue-600). These describe intent rather than appearance. Component tokens are the most specific tier — --button-background-color: var(--color-interactive). These connect semantic meaning to specific components.
-
-This hierarchy is what makes design token systems powerful for theming. To create a dark theme, you do not rewrite every component. You redefine the alias tokens for dark mode — --color-interactive becomes a lighter blue — and every component that references those tokens updates automatically.
-
-IMPLEMENTING TOKENS IN A PROJECT
-
-The simplest implementation is CSS custom properties defined at the :root level. This gives you global scope and cascade-based overrides for themes. For projects that need tokens in JavaScript as well as CSS, tools like Style Dictionary from Amazon allow you to define tokens once in JSON and compile them to CSS custom properties, JavaScript ES modules, and any other format you need simultaneously.
-
-The discipline that makes token systems work is not technical — it is organisational. Every time a new colour, spacing value, or typography decision is made, it needs to go into the token system rather than being hardcoded at the point of use. The enforcement of this discipline is what separates projects with genuine design token systems from projects with a handful of CSS variables that get ignored when someone is in a hurry.
-
-Start with colour and spacing. These are the highest-value tokens to systematise early because they are the most frequently referenced and the most painful to change at scale. Typography tokens follow naturally, and from there the system grows to cover everything from border radii to animation durations.`,
+      intro:"Design tokens are the single source of truth for your visual language - colours, spacing, typography, and more. Here is what they are, how they work, and why adopting them early saves significant pain later.",
+      body:"A design token is a named variable that stores a single design decision. Instead of writing color: #1a56db in your CSS you write color: var(--color-primary). The token is defined once in one place and referenced everywhere it is used.\n\nWHAT DESIGN TOKENS ARE\n\nThe power is not just in the variable itself - it is in what the token represents. A design token is not just a CSS variable. It is a named documented intentional design decision that exists independently of any specific implementation. The same token can be expressed in CSS custom properties, JavaScript objects, iOS Swift variables, or Android XML resources.\n\nTHE THREE TIERS OF TOKENS\n\nA well-structured token system has three tiers. Global tokens are the raw values. Alias tokens assign semantic meaning to global tokens - they describe intent rather than appearance. Component tokens are the most specific tier connecting semantic meaning to specific components.\n\nThis hierarchy is what makes design token systems powerful for theming. To create a dark theme you do not rewrite every component. You redefine the alias tokens for dark mode and every component that references those tokens updates automatically.\n\nIMPLEMENTING TOKENS IN A PROJECT\n\nThe simplest implementation is CSS custom properties defined at the root level. For projects that need tokens in JavaScript as well as CSS, tools like Style Dictionary from Amazon allow you to define tokens once in JSON and compile them to CSS custom properties and JavaScript modules simultaneously.",
     },
     {
       slug:"web-accessibility-checklist-developers",
       title:"A Practical Web Accessibility Checklist for Developers",
+      date:"7 June 2026",
       readTime:"7 min read",
       category:"Frontend Development",
-      intro:"Accessibility is not a feature to add at the end — it is a quality standard to build in from the start. This checklist covers the most impactful things developers can do to make their work genuinely usable by everyone.",
-      body:`Web accessibility is one of those areas where the gap between knowing it matters and actually doing it consistently is frustratingly wide. The WCAG guidelines run to hundreds of criteria across multiple conformance levels. Most developers know they should be thinking about accessibility but are unclear on where to start and what actually moves the needle.
-
-This is not a comprehensive audit framework. It is a practical checklist of the things that make the biggest real-world difference, prioritised by impact and ease of implementation.
-
-SEMANTIC HTML FIRST
-
-The single highest-leverage accessibility improvement you can make is using correct semantic HTML. A button that performs an action should be a button element, not a div with an onClick. A navigation landmark should be a nav element. Headings should reflect document hierarchy using h1 through h6 in logical order, not be chosen based on their default visual size.
-
-Semantic HTML is free. It requires no additional libraries, no extra code, and no configuration. It is simply a matter of using the right element for the right purpose. Screen readers, keyboard navigation, and browser accessibility features all build on semantic structure — when the structure is correct, much of the accessibility comes with it.
-
-KEYBOARD NAVIGATION
-
-Every interactive element on your site must be reachable and operable using only a keyboard. Tab should move focus forward through interactive elements, Shift+Tab should move it backward, Enter and Space should activate buttons and links, and Escape should close modals and dropdowns.
-
-Test this by unplugging your mouse and trying to use your own site. This exercise surfaces accessibility issues faster than any automated tool. Common failures include custom dropdown menus that trap keyboard focus, modal dialogs that do not move focus to the first interactive element when they open, and interactive elements that are not in the natural tab order because they are positioned with CSS.
-
-COLOUR CONTRAST
-
-Text must have sufficient contrast against its background to be readable by people with low vision or colour blindness. WCAG AA requires a contrast ratio of at least 4.5:1 for normal text and 3:1 for large text. WCAG AAA requires 7:1 and 4.5:1 respectively.
-
-Check your contrast ratios using the WebAIM Contrast Checker or the browser's built-in accessibility tools. Pay particular attention to placeholder text in form fields, disabled state text, and text on coloured backgrounds — these are where low contrast issues most commonly occur.
-
-IMAGES AND ALT TEXT
-
-Every meaningful image must have descriptive alt text. Decorative images that add no information should have empty alt attributes (alt="") so screen readers skip them. Images that are links need alt text describing the destination, not the image itself.
-
-The quality of alt text matters as much as its presence. "Image" or "photo" is not useful alt text. A description that conveys the meaningful content of the image — what it shows, what it communicates — is what assistive technology users need.
-
-FORM LABELS AND ERROR MESSAGES
-
-Every form input must have an associated label. Placeholder text is not a label — it disappears when the user starts typing, leaving them without context. Use the label element with a for attribute matching the input's id, or use aria-label for cases where a visible label is not appropriate.
-
-Error messages must be specific and helpful. "Invalid input" is not useful. "Please enter a valid UK postcode" tells the user exactly what to fix. Associate error messages with their fields using aria-describedby so screen readers announce them when the field receives focus.
-
-AUTOMATED TESTING AS A BASELINE
-
-Tools like axe, Lighthouse's accessibility audit, and the WAVE browser extension will catch around 30% of accessibility issues automatically. Run them on every page you build as a baseline check — they are fast, free, and will catch the most egregious problems.
-
-The remaining 70% requires human testing, ideally including testing with actual assistive technology users. But the automated baseline is where to start, and fixing everything an automated tool flags is a meaningful improvement over doing nothing.`,
+      intro:"Accessibility is not a feature to add at the end - it is a quality standard to build in from the start. This checklist covers the most impactful things developers can do to make their work genuinely usable by everyone.",
+      body:"SEMANTIC HTML FIRST\n\nThe single highest-leverage accessibility improvement you can make is using correct semantic HTML. A button that performs an action should be a button element not a div with an onClick. A navigation landmark should be a nav element. Headings should reflect document hierarchy using h1 through h6 in logical order.\n\nKEYBOARD NAVIGATION\n\nEvery interactive element on your site must be reachable and operable using only a keyboard. Tab should move focus forward, Shift+Tab backward, Enter and Space should activate buttons and links, and Escape should close modals and dropdowns. Test this by unplugging your mouse and trying to use your own site.\n\nCOLOUR CONTRAST\n\nText must have sufficient contrast against its background. WCAG AA requires a contrast ratio of at least 4.5:1 for normal text and 3:1 for large text. Check your ratios using the WebAIM Contrast Checker or browser accessibility tools.\n\nIMAGES AND ALT TEXT\n\nEvery meaningful image must have descriptive alt text. Decorative images should have empty alt attributes so screen readers skip them. The quality of alt text matters as much as its presence.\n\nAUTOMATED TESTING AS A BASELINE\n\nTools like axe, Lighthouse accessibility audit, and the WAVE browser extension will catch around 30% of issues automatically. Run them on every page as a baseline check. The remaining 70% requires human testing.",
     },
     {
       slug:"frontend-performance-optimisation-guide",
-      title:"Frontend Performance Optimisation — The Developer Guide to Faster Websites",
+      title:"Frontend Performance Optimisation - The Developer Guide to Faster Websites",
+      date:"8 June 2026",
       readTime:"8 min read",
       category:"Frontend Development",
-      intro:"Page speed is not just a user experience concern — it directly affects search rankings, conversion rates, and revenue. Here is a systematic guide to the optimisations that make the biggest real-world difference.",
-      body:`The relationship between page speed and business outcomes is well established. Google uses Core Web Vitals as a ranking signal. Every 100ms of additional load time reduces conversion rates measurably on e-commerce sites. Users on mobile networks abandon pages that take more than three seconds to load at rates that make the business case for performance work straightforward.
-
-Despite this, performance optimisation is still treated as a bonus task on many projects — something to look at if there is time rather than a first-class quality requirement. This guide is structured around the optimisations with the highest impact-to-effort ratio.
-
-MEASURE BEFORE YOU OPTIMISE
-
-The first rule of performance work is that you cannot improve what you do not measure. Before making any changes, establish a baseline using real measurement tools. Lighthouse in Chrome DevTools gives you a comprehensive performance audit with specific recommendations. WebPageTest provides more detailed waterfall analysis and the ability to test from different locations and connection speeds. Google Search Console's Core Web Vitals report shows you real-user data from your actual visitors.
-
-The metrics that matter most are Largest Contentful Paint (LCP) — how long until the main content is visible — First Input Delay (FID) or Interaction to Next Paint (INP) — how responsive the page is to user interaction — and Cumulative Layout Shift (CLS) — how much the layout jumps around as assets load.
-
-IMAGE OPTIMISATION
-
-Images are almost always the largest contributor to page weight and the highest-impact area for optimisation. The improvements available are significant and the effort is low.
-
-Serve images in modern formats. WebP provides 25-35% smaller file sizes than JPEG at equivalent quality. AVIF provides even better compression for browsers that support it. Use the picture element with format fallbacks to serve the best format each browser supports.
-
-Implement responsive images. A 1200px wide image served to a 375px mobile screen is transferring roughly ten times the data needed. Use the srcset attribute with multiple image sizes and let the browser select the appropriate one.
-
-Lazy load images below the fold. The loading="lazy" attribute on img elements is now supported across all modern browsers and defers loading of off-screen images until the user scrolls toward them, reducing initial page weight significantly.
-
-JAVASCRIPT BUNDLE OPTIMISATION
-
-JavaScript is the most expensive resource type on the web — not just in bytes, but in CPU time required to parse and execute it. A 200KB JavaScript file takes significantly more processing time than a 200KB image.
-
-Code splitting is the most impactful JavaScript optimisation available in modern build tools. Instead of shipping all your JavaScript in a single bundle, split it so that each route or feature only loads the code it actually needs. Vite and webpack both support this natively.
-
-Audit your dependencies regularly. The node_modules directory is where performance goes to die on many projects. Tools like bundlephobia.com show you the size cost of every npm package. Before adding a new dependency, check whether the functionality is achievable with native browser APIs or a lighter-weight alternative.
-
-CACHING AND CDN
-
-Static assets — JavaScript, CSS, images, fonts — should be served with long-lived cache headers and content-hashed filenames. A filename like main.a3f9c2.js changes when the content changes, so you can set cache expiry to one year with confidence that users will always get the latest version when it changes, while getting the cached version on subsequent visits otherwise.
-
-Serving assets from a CDN that has edge nodes close to your users reduces latency significantly for geographically distributed audiences. Vercel and Netlify both include global CDN distribution automatically, which is one of the practical reasons they have become the default deployment platforms for frontend projects.`,
+      intro:"Page speed directly affects search rankings, conversion rates, and revenue. Here is a systematic guide to the optimisations that make the biggest real-world difference.",
+      body:"MEASURE BEFORE YOU OPTIMISE\n\nThe first rule of performance work is that you cannot improve what you do not measure. Establish a baseline using Lighthouse in Chrome DevTools, WebPageTest for detailed waterfall analysis, and Google Search Console Core Web Vitals for real-user data. The metrics that matter most are Largest Contentful Paint, Interaction to Next Paint, and Cumulative Layout Shift.\n\nIMAGE OPTIMISATION\n\nImages are almost always the largest contributor to page weight. Serve images in modern formats - WebP provides 25-35% smaller file sizes than JPEG at equivalent quality. Implement responsive images using the srcset attribute. Lazy load images below the fold using the loading=lazy attribute which is now supported across all modern browsers.\n\nJAVASCRIPT BUNDLE OPTIMISATION\n\nJavaScript is the most expensive resource type on the web - not just in bytes but in CPU time required to parse and execute it. Code splitting is the most impactful optimisation available in modern build tools. Audit your dependencies regularly using tools like bundlephobia.com which shows the size cost of every npm package.\n\nCACHING AND CDN\n\nStatic assets should be served with long-lived cache headers and content-hashed filenames. Serving assets from a CDN that has edge nodes close to your users reduces latency significantly. Vercel and Netlify both include global CDN distribution automatically.",
     },
     {
       slug:"git-workflow-best-practices",
       title:"Git Workflow Best Practices for Frontend Developers",
+      date:"9 June 2026",
       readTime:"6 min read",
       category:"Development",
       intro:"A consistent Git workflow is the foundation of effective collaboration on any development team. Here is a practical guide to the conventions and practices that keep codebases clean and deployments predictable.",
-      body:`Git is the one tool that every developer uses every day, and yet Git workflow — the conventions around how branches are named, how commits are written, how pull requests are structured — is surprisingly inconsistently implemented across teams. The cost of poor Git hygiene compounds over time: history that is difficult to understand, merges that are harder than they should be, and deployments where nobody is quite sure what changed.
-
-These are the practices that make the biggest difference in day-to-day development velocity and long-term codebase maintainability.
-
-BRANCH NAMING CONVENTIONS
-
-Consistent branch naming makes the purpose of every branch immediately legible from a branch list. A widely adopted convention follows the pattern type/description — for example feature/user-authentication, fix/checkout-form-validation, or chore/update-dependencies.
-
-The type prefix indicates the category of work. Feature branches contain new functionality. Fix branches address bugs. Chore branches handle maintenance tasks like dependency updates or build configuration changes. Refactor branches improve code structure without changing behaviour. This mirrors the conventional commits standard for commit messages and makes the branch list self-documenting.
-
-Keep branch names lowercase, use hyphens as separators, and keep descriptions concise but meaningful. A branch named fix/nav-dropdown-keyboard-focus tells you everything you need to know. A branch named jeremys-changes tells you nothing useful.
-
-COMMIT MESSAGE QUALITY
-
-A well-written commit message is a communication to your future self and your teammates about what changed and why. The convention that has become the industry standard is Conventional Commits: a short header following the format type(scope): description, followed by an optional body with more detail.
-
-Examples: feat(auth): add email verification flow. fix(checkout): prevent double-submission on payment form. docs(readme): update local development setup instructions.
-
-The most important discipline is writing commit messages that explain the why, not just the what. The diff shows what changed. The commit message should explain why that change was necessary and what problem it solves. Future developers — including yourself six months from now — will thank you.
-
-PULL REQUEST STRUCTURE
-
-Pull requests are a communication tool as much as a code review mechanism. A good PR description includes a summary of what changed and why, a note on any testing performed, screenshots or recordings for UI changes, and any context the reviewer needs to evaluate the implementation sensibly.
-
-Keep PRs focused and small. A PR that touches 20 files across three unrelated concerns is significantly harder to review than three focused PRs with clear, singular purposes. The discipline of keeping PRs small forces clearer thinking about scope and makes the review process faster and more effective.
-
-PROTECTING THE MAIN BRANCH
-
-The main or master branch should always be in a deployable state. Protecting it with branch rules — requiring pull request reviews before merging, requiring status checks to pass, preventing direct pushes — is not bureaucracy. It is the practice that prevents the category of incidents where someone pushes a breaking change directly to production at 4pm on a Friday.
-
-Combined with a CI pipeline that runs tests and linting on every pull request, branch protection turns your main branch into a reliable foundation rather than a shared workspace where anything might be broken at any given moment.`,
+      body:"BRANCH NAMING CONVENTIONS\n\nConsistent branch naming makes the purpose of every branch immediately legible. A widely adopted convention follows the pattern type/description - for example feature/user-authentication, fix/checkout-form-validation, or chore/update-dependencies. Keep branch names lowercase, use hyphens as separators, and keep descriptions concise but meaningful.\n\nCOMMIT MESSAGE QUALITY\n\nA well-written commit message is a communication to your future self and your teammates about what changed and why. The convention that has become the industry standard is Conventional Commits: a short header following the format type(scope): description, followed by an optional body with more detail. Write messages that explain the why not just the what.\n\nPULL REQUEST STRUCTURE\n\nPull requests are a communication tool as much as a code review mechanism. A good PR description includes a summary of what changed and why, a note on testing performed, and screenshots for UI changes. Keep PRs focused and small - a PR that touches 20 files across three unrelated concerns is significantly harder to review than three focused PRs.\n\nPROTECTING THE MAIN BRANCH\n\nThe main branch should always be in a deployable state. Protecting it with branch rules requiring pull request reviews and status checks prevents the category of incidents where someone pushes a breaking change directly to production at 4pm on a Friday.",
     }
   ];
 
   if (article) {
     const post = posts.find(p=>p.slug===article);
     return (
-      <div>
+      <PageWrapper onBack={()=>setArticle(null)}>
         <div style={{marginBottom:8}}>
           <span style={{fontSize:11,color:GREEN,fontFamily:"DM Mono,monospace",letterSpacing:".08em"}}>{post.category}</span>
         </div>
         <h1 style={{fontSize:22,fontWeight:600,color:"#1a1a1a",marginBottom:12,lineHeight:1.4}}>{post.title}</h1>
-        <div style={{display:"flex",gap:16,marginBottom:28}}>          <span style={{fontSize:12,color:"#bbb",fontFamily:"DM Mono,monospace"}}>{post.readTime}</span>
+        <div style={{display:"flex",gap:16,marginBottom:28}}>
+          <span style={{fontSize:12,color:"#bbb",fontFamily:"DM Mono,monospace"}}>{post.date}</span>
+          <span style={{fontSize:12,color:"#bbb",fontFamily:"DM Mono,monospace"}}>{post.readTime}</span>
         </div>
-        <p style={{fontSize:15,color:"#777",lineHeight:1.9,marginBottom:24,borderLeft:`2.5px solid ${GREEN}`,paddingLeft:16,fontStyle:"italic"}}>{post.intro}</p>
+        <p style={{fontSize:15,color:"#777",lineHeight:1.9,marginBottom:24,borderLeft:"2.5px solid "+GREEN,paddingLeft:16,fontStyle:"italic"}}>{post.intro}</p>
         <div style={{display:"flex",flexDirection:"column",gap:16}}>
           {post.body.split("\n\n").map((para,i)=>(
             para.trim() === para.trim().toUpperCase() && para.length < 80
@@ -1436,14 +1172,12 @@ Combined with a CI pipeline that runs tests and linting on every pull request, b
               : <p key={i} style={{fontSize:14,color:"#666",lineHeight:1.9}}>{para}</p>
           ))}
         </div>
-        <BottomAdUnit />
-        <SiteFooter onNavigate={(p) => { if(p === "blog") { setArticle(null); setTimeout(()=>{ const el=document.querySelector(".main-scroll"); if(el) el.scrollTop=0; window.scrollTo(0,0); },0); } else if(onNavigate) onNavigate(p); }} />
-      </div>
+      </PageWrapper>
     );
   }
 
   return (
-    <div>
+    <PageWrapper onBack={onBack}>
       <div style={{marginBottom:28}}>
         <div style={{fontSize:11,color:GREEN,fontFamily:"DM Mono,monospace",letterSpacing:".1em",marginBottom:8,textTransform:"uppercase"}}>Blog</div>
         <h1 style={{fontSize:26,fontWeight:600,color:"#1a1a1a",marginBottom:8}}>For developers & designers</h1>
@@ -1451,215 +1185,173 @@ Combined with a CI pipeline that runs tests and linting on every pull request, b
       </div>
       <div style={{display:"flex",flexDirection:"column",gap:12}}>
         {posts.map(post=>(
-          <div key={post.slug} className="card" style={{cursor:"pointer",transition:"border-color .15s,box-shadow .15s"}}
-            onMouseEnter={e=>{e.currentTarget.style.borderColor=GREEN;e.currentTarget.style.boxShadow=`0 2px 12px rgba(22,163,74,.08)`;}}
-            onMouseLeave={e=>{e.currentTarget.style.borderColor="#e8e8e2";e.currentTarget.style.boxShadow="0 1px 4px rgba(0,0,0,.04)";}}
-            onClick={()=>{ setArticle(post.slug); setTimeout(()=>{ const el=document.querySelector(".main-scroll"); if(el) el.scrollTop=0; window.scrollTo(0,0); },0); }}>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",gap:12,flexWrap:"wrap"}}>
-              <div style={{flex:1}}>
-                <span style={{fontSize:10,color:GREEN,fontFamily:"DM Mono,monospace",letterSpacing:".08em",display:"block",marginBottom:6}}>{post.category}</span>
-                <h2 style={{fontSize:15,fontWeight:600,color:"#1a1a1a",marginBottom:8,lineHeight:1.4}}>{post.title}</h2>
-                <p style={{fontSize:13,color:"#aaa",lineHeight:1.7}}>{post.intro}</p>
-              </div>
+          <div key={post.slug} className="card" style={{cursor:"pointer",transition:"border-color .15s"}}
+            onMouseEnter={e=>e.currentTarget.style.borderColor=GREEN}
+            onMouseLeave={e=>e.currentTarget.style.borderColor="#e8e8e2"}
+            onClick={()=>setArticle(post.slug)}>
+            <div style={{flex:1}}>
+              <span style={{fontSize:10,color:GREEN,fontFamily:"DM Mono,monospace",letterSpacing:".08em",display:"block",marginBottom:6}}>{post.category}</span>
+              <h2 style={{fontSize:15,fontWeight:600,color:"#1a1a1a",marginBottom:8,lineHeight:1.4}}>{post.title}</h2>
+              <p style={{fontSize:13,color:"#aaa",lineHeight:1.7}}>{post.intro}</p>
             </div>
             <div style={{display:"flex",gap:16,marginTop:12,paddingTop:12,borderTop:"1.5px solid #f0f0eb",alignItems:"center",justifyContent:"space-between"}}>
-              <div style={{display:"flex",gap:12}}>                <span style={{fontSize:11,color:"#bbb",fontFamily:"DM Mono,monospace"}}>{post.readTime}</span>
+              <div style={{display:"flex",gap:12}}>
+                <span style={{fontSize:11,color:"#bbb",fontFamily:"DM Mono,monospace"}}>{post.date}</span>
+                <span style={{fontSize:11,color:"#bbb",fontFamily:"DM Mono,monospace"}}>{post.readTime}</span>
               </div>
-              <span style={{fontSize:11,color:GREEN,fontFamily:"DM Mono,monospace"}}>Read article →</span>
+              <span style={{fontSize:11,color:GREEN,fontFamily:"DM Mono,monospace"}}>Read article</span>
             </div>
           </div>
         ))}
       </div>
-      <BottomAdUnit />
-      <SiteFooter onNavigate={onNavigate} />
+    </PageWrapper>
+  );
+}
+
+function LoremContactPage({ onBack }) {
+  return (
+    <div>
+      <div style={{marginBottom:28}}>
+        <div style={{fontSize:11,color:GREEN,fontFamily:"DM Mono,monospace",letterSpacing:".1em",marginBottom:8,textTransform:"uppercase"}}>Contact</div>
+        <h1 style={{fontSize:26,fontWeight:600,color:"#1a1a1a",marginBottom:12,lineHeight:1.3}}>Get in Touch</h1>
+      </div>
+      <div className="card" style={{marginBottom:16,lineHeight:1.9}}>
+        <p style={{fontSize:14,color:"#555"}}>
+          Whether you have a question, a suggestion, or want to discuss advertising - we would love to hear from you. Reach us at <a href="mailto:contact.jwgroup@proton.me" style={{color:GREEN}}>contact.jwgroup@proton.me</a>.
+        </p>
+      </div>
+      {[
+        { label:"General Enquiries", body:"Have a suggestion for a new tool, found a bug or want to give feedback? We would love to hear from developers, designers and content creators using LoremForge. Email contact.jwgroup@proton.me and we will get back to you as soon as possible." },
+        { label:"Advertising & Partnerships", body:"LoremForge reaches developers, designers and content creators who need placeholder content tools in their daily workflow. We welcome advertising from developer tools, design software, hosting providers, SaaS products and creative services. Contact us at contact.jwgroup@proton.me to discuss opportunities." },
+      ].map((sec, i) => (
+        <div key={i} className="card" style={{marginBottom:12,borderColor:"#e8e8e2"}}>
+          <div style={{fontSize:13,fontWeight:600,color:GREEN,fontFamily:"DM Mono,monospace",letterSpacing:".04em",marginBottom:10,textTransform:"uppercase"}}>{"0" + (i+1).toString().slice(-2)} - {sec.label}</div>
+          <p style={{fontSize:14,color:"#555",lineHeight:1.85}}>{sec.body}</p>
+        </div>
+      ))}
     </div>
   );
 }
 
+function LoremTermsPage({ onBack }) {
+  const sections = [
+    { title:"Acceptance of Terms", body:"By using LoremForge (loremforge.co.uk) you agree to these Terms of Service. If you do not agree, please do not use our website." },
+    { title:"Use of Tools", body:"LoremForge provides free placeholder content tools for personal and professional use. Generated content is provided for use as placeholder material only and should be replaced with real content before publication." },
+    { title:"Generated Content", body:"All content generated by LoremForge tools is for placeholder purposes only. We make no warranties regarding the suitability of generated content for any specific purpose." },
+    { title:"Advertising", body:"LoremForge displays third-party advertisements including those served by Google AdSense. We are not responsible for the content of third-party ads." },
+    { title:"Intellectual Property", body:"LoremForge and all associated tools, branding and original content are the intellectual property of JW Group. All rights reserved." },
+    { title:"Limitation of Liability", body:"LoremForge and its operators shall not be liable for any damages arising from your use of our tools or website." },
+    { title:"Changes to Terms", body:"We may update these terms at any time. Continued use of LoremForge constitutes acceptance of any revised terms." },
+    { title:"Governing Law", body:"These terms are governed by the laws of England and Wales." },
+    { title:"Contact", body:"Questions about these Terms of Service? Contact us at contact.jwgroup@proton.me." },
+  ];
+  return (
+    <div>
+      <div style={{marginBottom:28}}>
+        <div style={{fontSize:11,color:GREEN,fontFamily:"DM Mono,monospace",letterSpacing:".1em",marginBottom:8,textTransform:"uppercase"}}>Legal</div>
+        <h1 style={{fontSize:26,fontWeight:500,color:"#1a1a1a",marginBottom:8,lineHeight:1.3}}>Terms of Service</h1>
+        <p style={{fontSize:13,color:"#aaa"}}>Last updated: June 2025 - loremforge.co.uk</p>
+      </div>
+      {sections.map((sec, i) => (
+        <div key={i} className="card" style={{marginBottom:12,borderColor:"#e8e8e2"}}>
+          <div style={{fontSize:13,fontWeight:600,color:GREEN,fontFamily:"DM Mono,monospace",letterSpacing:".04em",marginBottom:10,textTransform:"uppercase"}}>{"0" + (i+1).toString().slice(-2)} - {sec.title}</div>
+          <p style={{fontSize:14,color:"#555",lineHeight:1.85}}>{sec.body}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
 
-/* ──────────────────────────────────── PRIVACY POLICY PAGE ── */
 function LoremPrivacyPage({ onBack }) {
   const sections = [
-    {
-      title: "Overview",
-      body: `This Privacy Policy explains how LoremForge ("we", "us", "our") collects, uses and protects information when you visit loremforge.co.uk (the "Site"). By using the Site you agree to the practices described in this policy. If you do not agree, please discontinue use of the Site.
-
-We are committed to ensuring your privacy is protected. This policy is effective from June 2026 and may be updated periodically. We will notify you of significant changes by updating the date at the top of this page.`
-    },
-    {
-      title: "Information We Collect",
-      body: `We do not require you to create an account or provide personal information to use LoremForge. However, the following information may be collected:
-
-Automatically collected data: When you visit the Site, standard web server logs and analytics tools may record your IP address, browser type, operating system, referring URLs, pages visited and time spent on the Site. This data is used in aggregate form to understand how the Site is used and to improve it.
-
-Tool inputs: LoremForge provides AI-powered placeholder content tools including lorem ipsum generators, JSON placeholder data generator, fake names and data generator, placeholder image generator and markdown block generator. Any text you enter into these tools is sent to the Anthropic API to generate a response and is not stored on our servers. We do not retain, log or analyse the content of your tool inputs.
-
-Email address: If you choose to subscribe to our newsletter, we collect your email address for the sole purpose of sending you that newsletter. We do not share your email address with third parties.`
-    },
-    {
-      title: "How We Use Your Information",
-      body: `We use the information collected in the following ways:
-
-To operate and improve the Site and its tools. To understand aggregate usage patterns and optimise the user experience. To send you our newsletter if you have subscribed. To serve relevant advertising through third-party ad networks including Google AdSense.
-
-We do not sell, trade or rent your personal information to third parties. We do not use your tool inputs for any purpose other than generating the requested output via the Anthropic API.`
-    },
-    {
-      title: "Third-Party Services",
-      body: `LoremForge uses the following third-party services which may collect data independently under their own privacy policies:
-
-Anthropic API: Tool inputs are processed by Anthropic's Claude API to generate AI responses. Anthropic's privacy policy applies to this processing. Please review Anthropic's privacy policy at anthropic.com/privacy.
-
-Google AdSense: We display advertisements served by Google AdSense. Google may use cookies and similar technologies to serve ads based on your prior visits to this or other websites. You can opt out of personalised advertising by visiting Google's Ad Settings at adssettings.google.com.
-
-Google Analytics: We may use Google Analytics to understand site usage. Google Analytics collects anonymised usage data. You can opt out using the Google Analytics Opt-out Browser Add-on.
-
-Vercel: The Site is hosted on Vercel's infrastructure. Vercel may collect standard server logs. Please review Vercel's privacy policy at vercel.com/legal/privacy-policy.`
-    },
-    {
-      title: "Cookies",
-      body: `The Site uses cookies in the following ways:
-
-Essential cookies: Required for the Site to function correctly. These cannot be disabled.
-
-Analytics cookies: Used to collect anonymised information about how visitors use the Site. You can disable these in your browser settings.
-
-Advertising cookies: Google AdSense may set cookies to serve personalised advertisements. You can manage your ad personalisation preferences at adssettings.google.com.
-
-You can control cookie settings through your browser. Note that disabling certain cookies may affect the functionality of the Site.`
-    },
-    {
-      title: "Data Retention",
-      body: `We retain data only for as long as necessary for the purposes described in this policy. Newsletter subscriber email addresses are retained until you unsubscribe. Aggregate analytics data may be retained for up to 26 months. Tool input data is not retained — it is processed in real time and discarded.`
-    },
-    {
-      title: "Your Rights",
-      body: `Under UK data protection law (UK GDPR) you have the following rights:
-
-The right to access personal data we hold about you. The right to correct inaccurate personal data. The right to erasure of your personal data. The right to restrict processing of your personal data. The right to data portability. The right to object to processing.
-
-To exercise any of these rights, please contact us at contact.loremforge@gmail.com. We will respond to all requests within 30 days.`
-    },
-    {
-      title: "Children's Privacy",
-      body: `LoremForge is not directed at children under the age of 13. We do not knowingly collect personal information from children. If you believe a child has provided us with personal information, please contact us and we will take steps to delete it promptly.`
-    },
-    {
-      title: "Changes to This Policy",
-      body: `We may update this Privacy Policy from time to time. We will post any changes on this page with an updated effective date. We encourage you to review this policy periodically. Your continued use of the Site after any changes constitutes your acceptance of the revised policy.`
-    },
-    {
-      title: "Contact Us",
-      body: `If you have any questions about this Privacy Policy or our data practices, please contact us at contact.loremforge@gmail.com. We are based in the United Kingdom.`
-    },
+    { title:"Overview", body:"This Privacy Policy explains how LoremForge collects, uses and protects information when you visit loremforge.co.uk. By using the Site you agree to the practices described in this policy." },
+    { title:"Information We Collect", body:"We do not require you to create an account or provide personal information to use LoremForge. Analytics tools may record your IP address, browser type, pages visited and time spent on the Site in aggregate form. Any text you enter into our AI tools is sent to the Anthropic API to generate a response and is not stored on our servers." },
+    { title:"Third-Party Services", body:"LoremForge uses the Anthropic API to power our AI tools. We may display advertisements served by Google AdSense. We may use Google Analytics to understand site usage in aggregate form." },
+    { title:"Cookies", body:"Essential cookies are required for the Site to function. Analytics and advertising cookies may be set by third-party services. You can control cookie settings through your browser." },
+    { title:"Your Rights", body:"Under UK GDPR you have the right to access, correct, or delete your personal data. To exercise these rights, contact us at contact.jwgroup@proton.me." },
+    { title:"Contact Us", body:"If you have any questions about this Privacy Policy, please contact us at contact.jwgroup@proton.me. We are based in the United Kingdom." },
   ];
-
   return (
     <div>
       <div style={{marginBottom:28}}>
         <div style={{fontSize:11,color:GREEN,fontFamily:"DM Mono,monospace",letterSpacing:".1em",marginBottom:8,textTransform:"uppercase"}}>Privacy Policy</div>
         <h1 style={{fontSize:26,fontWeight:600,color:"#1a1a1a",marginBottom:8,lineHeight:1.3}}>Privacy Policy</h1>
-        <p style={{fontSize:13,color:"#aaa"}}>Effective date: June 2026 · loremforge.co.uk</p>
+        <p style={{fontSize:13,color:"#aaa"}}>Effective date: June 2026 - loremforge.co.uk</p>
       </div>
       {sections.map((sec, i) => (
         <div key={i} className="card" style={{marginBottom:12,borderColor:"#e8e8e2"}}>
-          <div style={{fontSize:13,fontWeight:600,color:GREEN,fontFamily:"DM Mono,monospace",letterSpacing:".04em",marginBottom:10,textTransform:"uppercase"}}>{"0" + (i+1).toString().slice(-2)} — {sec.title}</div>
-          {sec.body.split("\n\n").map((para, j) => (
-            <p key={j} style={{fontSize:14,color:"#777",lineHeight:1.85,marginBottom: j < sec.body.split("\n\n").length-1 ? 10 : 0}}>{para}</p>
-          ))}
+          <div style={{fontSize:13,fontWeight:600,color:GREEN,fontFamily:"DM Mono,monospace",letterSpacing:".04em",marginBottom:10,textTransform:"uppercase"}}>{"0" + (i+1).toString().slice(-2)} - {sec.title}</div>
+          <p style={{fontSize:14,color:"#555",lineHeight:1.85}}>{sec.body}</p>
         </div>
       ))}
     </div>
   );
 }
 
-// ── SITE FOOTER ────────────────────────────────────────────────────────
+// ── SITE FOOTER ──────────────────────────────────────────────────────────────
 function SiteFooter({ onNavigate }) {
   const links = [
-    { label:"Blog",        icon:"ti-pencil",     page:"blog" },
-    { label:"Advertising", icon:"ti-ad-2",        page:"advertising" },
-    { label:"About Us",    icon:"ti-info-circle", page:"about" },
-    { label:"Privacy Policy", icon:"ti-shield",      page:"privacy" },
+    { label:"Blog",             icon:"ti-pencil",      page:"blog" },
+    { label:"Contact",          icon:"ti-ad-2",        page:"contact" },
+    { label:"About Us",         icon:"ti-info-circle", page:"about" },
+    { label:"Privacy Policy",   icon:"ti-shield",      page:"privacy" },
+    { label:"Terms of Service", icon:"ti-file-text",   page:"terms" },
   ];
   return (
     <div style={{ marginTop:40, paddingTop:20, borderTop:"1.5px solid #e8e8e2" }}>
       <div style={{ display:"flex", flexWrap:"wrap", justifyContent:"center", gap:8, marginBottom:16 }}>
         {links.map(l => (
-          <button key={l.label} onClick={()=>onNavigate(l.page)} style={{ display:"inline-flex", alignItems:"center", gap:6, padding:"7px 16px", background:"#fff", border:"1.5px solid #e8e8e2", borderRadius:5, color:"#aaa", fontSize:12, fontFamily:"DM Mono,monospace", cursor:"pointer", transition:"all .15s", letterSpacing:".03em", boxShadow:"0 1px 3px rgba(0,0,0,.04)" }}
+          <button key={l.label} onClick={()=>onNavigate(l.page)} style={{ display:"inline-flex", alignItems:"center", gap:6, padding:"7px 16px", background:"#fff", border:"1.5px solid #e8e8e2", borderRadius:5, color:"#aaa", fontSize:12, fontFamily:"DM Mono,monospace", cursor:"pointer", transition:"all .15s", letterSpacing:".03em" }}
             onMouseEnter={e => { e.currentTarget.style.borderColor=GREEN; e.currentTarget.style.color=GREEN; e.currentTarget.style.background="#f0fdf4"; }}
             onMouseLeave={e => { e.currentTarget.style.borderColor="#e8e8e2"; e.currentTarget.style.color="#aaa"; e.currentTarget.style.background="#fff"; }}>
-            <i className={`ti ${l.icon}`} style={{ fontSize:13 }} />
+            <i className={"ti " + l.icon} style={{ fontSize:13 }} />
             {l.label}
           </button>
         ))}
       </div>
       <div style={{ textAlign:"center", fontFamily:"DM Mono,monospace", fontSize:10, color:"#ccc", paddingBottom:20, letterSpacing:".06em" }}>
-        © {new Date().getFullYear()} LoremForge · loremforge.co.uk
+        {new Date().getFullYear()} LoremForge - loremforge.co.uk
       </div>
     </div>
   );
 }
 
-
-// ── SIDEBAR CONTENTS ───────────────────────────────────────────────────
+// ── SIDEBAR CONTENTS ─────────────────────────────────────────────────────────
 function SidebarContents({ activeTool, setActiveTool, onClose }) {
   return (
     <>
-      {/* Logo block — only shown in mobile drawer, hidden on desktop sidebar */}
       {onClose && (
-        <div style={{ padding:"16px 16px 10px", display:"flex", alignItems:"center", justifyContent:"space-between", borderBottom:"1.5px solid #f0f0eb" }}>
+        <div style={{ padding:"16px 16px 10px", display:"flex", alignItems:"center", justifyContent:"space-between", borderBottom:"1.5px solid #e8e8e2" }}>
           <div style={{ display:"flex", alignItems:"center", gap:10 }}>
-            <div style={{ width:28, height:28, background:GREEN, borderRadius:6, display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, boxShadow:"0 2px 6px rgba(22,163,74,.3)" }}>
-              <svg width="15" height="14" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                
-                <path d="M2 10 Q2 9 3 9 L17 9 Q18 9 18 10 L17 12 L3 12 Z" fill="#fff"/>
-                
-                <path d="M3 9.5 L1 11 L3 11 Z" fill="#fff"/>
-                
-                <rect x="6" y="12" width="8" height="2" rx="0.5" fill="#fff"/>
-                
-                <rect x="4" y="14" width="12" height="2.5" rx="1" fill="#fff"/>
-                
-                <rect x="10" y="1" width="6" height="3.5" rx="1" fill="#fff" transform="rotate(-35 13 2.5)"/>
-                
-                <rect x="12.5" y="3" width="2" height="6" rx="0.8" fill="#fff" transform="rotate(-35 13.5 6)"/>
-              </svg>
+            <div style={{ width:26,height:26,background:GREEN,borderRadius:6,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0 }}>
+              <i className="ti ti-align-left" style={{ fontSize:14, color:"#fff" }} />
             </div>
             <div>
-              <div style={{ fontFamily:"DM Mono,monospace", fontSize:14, fontWeight:500, color:"#1a1a1a", letterSpacing:".02em" }}>LoremForge</div>
-              <div style={{ fontSize:9, color:"#bbb", letterSpacing:".1em", textTransform:"uppercase" }}>placeholder toolkit</div>
+              <div style={{ fontFamily:"DM Mono,monospace",fontSize:13,fontWeight:500,color:"#1a1a1a",letterSpacing:".02em" }}>LoremForge</div>
+              <div style={{ fontSize:9,color:"#bbb",letterSpacing:".08em",textTransform:"uppercase" }}>Placeholder toolkit</div>
             </div>
           </div>
-          <button onClick={onClose} style={{ background:"none", border:"none", color:"#bbb", cursor:"pointer", fontSize:20, padding:"2px 6px", lineHeight:1, borderRadius:4 }}>×</button>
+          <button onClick={onClose} style={{ background:"none",border:"none",color:"#bbb",cursor:"pointer",fontSize:18,padding:"4px",lineHeight:1 }}>x</button>
         </div>
       )}
-      <div style={{ padding:"10px 16px 6px", fontSize:10, letterSpacing:".1em", color:"#ccc", textTransform:"uppercase", fontWeight:600 }}>Tools</div>
-      {TOOLS.map(tool => (
+      <div style={{ padding:"10px 16px 8px",fontSize:10,letterSpacing:".1em",color:"#bbb",textTransform:"uppercase" }}>Tools</div>
+      {TOOLS.map(tool=>(
         <button key={tool.id} className="sidebar-tool-btn"
-          onClick={() => { setActiveTool(tool.id); onClose && onClose(); }}
-          style={{
-            borderLeft: `2.5px solid ${activeTool === tool.id ? GREEN : "transparent"}`,
-            background: activeTool === tool.id ? GREENBG : "transparent",
-          }}>
-          <i className={`ti ${tool.icon}`} style={{ fontSize:15, color: activeTool === tool.id ? GREEN : "#ccc", flexShrink:0 }} />
+          onClick={()=>{ setActiveTool(tool.id); onClose&&onClose(); }}
+          style={{ borderLeft:"2px solid " + (activeTool===tool.id ? GREEN : "transparent"), background:activeTool===tool.id ? GREENBG : "transparent" }}>
+          <i className={"ti " + tool.icon} style={{ fontSize:15, color:activeTool===tool.id ? GREEN : "#bbb", flexShrink:0 }} />
           <div>
-            <div style={{ fontSize:12, color: activeTool === tool.id ? "#1a1a1a" : "#777", fontWeight: activeTool === tool.id ? 600 : 400 }}>
-              {tool.label}
-            </div>
-            <div style={{ fontSize:10, color:"#ccc", marginTop:1 }}>{tool.desc}</div>
+            <div style={{ fontSize:12,color:activeTool===tool.id ? "#1a1a1a" : "#888",fontWeight:activeTool===tool.id ? 600 : 400 }}>{tool.label}</div>
+            <div style={{ fontSize:10,color:"#ccc",marginTop:1 }}>{tool.desc}</div>
           </div>
         </button>
       ))}
-      <div style={{ margin:"12px 16px 0", paddingTop:12, borderTop:"1.5px solid #f0f0eb" }}>
-        <div style={{ fontSize:10, letterSpacing:".08em", color:"#ddd", marginBottom:5, textTransform:"uppercase" }}>Powered by</div>
-        <div style={{ fontFamily:"DM Mono,monospace", fontSize:11, color:"#ccc" }}>Claude Sonnet 4</div>
-      </div>
       <SidebarAdUnit />
     </>
   );
 }
 
-// ── MAIN APP ───────────────────────────────────────────────────────────
+// ── MAIN APP ──────────────────────────────────────────────────────────────────
 export default function App() {
   const [activeTool, setActiveTool] = useState("classic");
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -1668,20 +1360,6 @@ export default function App() {
 
   const handleNav  = p => { setPage(p); setDrawerOpen(false); };
   const handleBack = () => setPage(null);
-
-  // ── Dynamic meta tags & URLs ──
-  const toolMeta = TOOL_META[activeTool] || {};
-  const pageMeta = page ? PAGE_META[page] : null;
-  const currentMeta = pageMeta || (page ? SITE_DEFAULT : toolMeta);
-  useDocumentMeta(currentMeta.title || SITE_DEFAULT.title, currentMeta.desc || SITE_DEFAULT.desc);
-  usePushState(pageMeta ? pageMeta.path : (toolMeta.path || "/"));
-
-  // Scroll to top whenever page or tool changes
-  useEffect(() => {
-    const el = document.querySelector('.main-scroll');
-    if (el) el.scrollTop = 0;
-    window.scrollTo(0, 0);
-  }, [page, activeTool]);
 
   const activeMeta = TOOLS.find(t => t.id === activeTool);
 
@@ -1701,25 +1379,11 @@ export default function App() {
       <style>{styles}</style>
       <div style={{ minHeight:"100vh", background:"#f8f8f5", display:"flex", flexDirection:"column" }}>
 
-        {/* Desktop header */}
         {!isMobile && (
           <div style={{ borderBottom:"1.5px solid #e8e8e2", padding:"13px 28px", display:"flex", alignItems:"center", justifyContent:"space-between", background:"#fff", flexShrink:0, boxShadow:"0 1px 3px rgba(0,0,0,.04)" }}>
             <div style={{ display:"flex", alignItems:"center", gap:12, cursor:"pointer" }} onClick={handleBack}>
-              <div style={{ width:30, height:30, background:GREEN, borderRadius:7, display:"flex", alignItems:"center", justifyContent:"center", boxShadow:"0 2px 8px rgba(22,163,74,.3)" }}>
-                <svg width="16" height="14" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                
-                <path d="M2 10 Q2 9 3 9 L17 9 Q18 9 18 10 L17 12 L3 12 Z" fill="#fff"/>
-                
-                <path d="M3 9.5 L1 11 L3 11 Z" fill="#fff"/>
-                
-                <rect x="6" y="12" width="8" height="2" rx="0.5" fill="#fff"/>
-                
-                <rect x="4" y="14" width="12" height="2.5" rx="1" fill="#fff"/>
-                
-                <rect x="10" y="1" width="6" height="3.5" rx="1" fill="#fff" transform="rotate(-35 13 2.5)"/>
-                
-                <rect x="12.5" y="3" width="2" height="6" rx="0.8" fill="#fff" transform="rotate(-35 13.5 6)"/>
-              </svg>
+              <div style={{ width:30, height:30, background:GREEN, borderRadius:7, display:"flex", alignItems:"center", justifyContent:"center" }}>
+                <i className="ti ti-align-left" style={{ fontSize:16, color:"#fff" }} />
               </div>
               <div>
                 <div style={{ fontFamily:"DM Mono,monospace", fontSize:16, fontWeight:500, color:"#1a1a1a", letterSpacing:".02em" }}>LoremForge</div>
@@ -1732,25 +1396,11 @@ export default function App() {
           </div>
         )}
 
-        {/* Mobile header */}
         {isMobile && (
           <div className="mobile-header" style={{ borderBottom:"1.5px solid #e8e8e2", padding:"12px 16px", display:"flex", alignItems:"center", justifyContent:"space-between", background:"#fff", flexShrink:0 }}>
             <div style={{ display:"flex", alignItems:"center", gap:10, cursor:"pointer" }} onClick={handleBack}>
               <div style={{ width:26, height:26, background:GREEN, borderRadius:6, display:"flex", alignItems:"center", justifyContent:"center" }}>
-                <svg width="14" height="12" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                
-                <path d="M2 10 Q2 9 3 9 L17 9 Q18 9 18 10 L17 12 L3 12 Z" fill="#fff"/>
-                
-                <path d="M3 9.5 L1 11 L3 11 Z" fill="#fff"/>
-                
-                <rect x="6" y="12" width="8" height="2" rx="0.5" fill="#fff"/>
-                
-                <rect x="4" y="14" width="12" height="2.5" rx="1" fill="#fff"/>
-                
-                <rect x="10" y="1" width="6" height="3.5" rx="1" fill="#fff" transform="rotate(-35 13 2.5)"/>
-                
-                <rect x="12.5" y="3" width="2" height="6" rx="0.8" fill="#fff" transform="rotate(-35 13.5 6)"/>
-              </svg>
+                <i className="ti ti-align-left" style={{ fontSize:14, color:"#fff" }} />
               </div>
               <span style={{ fontFamily:"DM Mono,monospace", fontSize:14, fontWeight:500, color:"#1a1a1a" }}>LoremForge</span>
             </div>
@@ -1764,7 +1414,6 @@ export default function App() {
           </div>
         )}
 
-        {/* Mobile drawer */}
         {drawerOpen && (
           <div className="mobile-drawer">
             <div className="mobile-drawer-overlay" onClick={() => setDrawerOpen(false)} />
@@ -1774,7 +1423,6 @@ export default function App() {
           </div>
         )}
 
-        {/* Body */}
         <div style={{ display:"flex", flex:1, overflow:"hidden" }}>
           {!isMobile && (
             <div className="sidebar">
@@ -1787,23 +1435,23 @@ export default function App() {
                 <>
                   <InlineAdUnit />
                   <div style={{ marginTop:24 }}>
-                    {page==="blog"        && <LoremBlogPage key={page} onBack={handleBack} onNavigate={handleNav} />}
-                    {page==="advertising" && <LoremAdvertisingPage onBack={handleBack} />}
-                    
+                    {page==="blog"        && <LoremBlogPage onBack={handleBack} />}
                     {page==="about"       && <LoremAboutPage onBack={handleBack} />}
                     {page==="privacy"     && <LoremPrivacyPage onBack={handleBack} />}
+                    {page==="contact"     && <LoremContactPage onBack={handleBack} />}
+                    {page==="terms"       && <LoremTermsPage onBack={handleBack} />}
                   </div>
-                  {page !== "blog" && <BottomAdUnit />}
-                  {page !== "blog" && <SiteFooter onNavigate={handleNav} />}
+                  <BottomAdUnit />
+                  <SiteFooter onNavigate={handleNav} />
                   {isMobile && <div style={{ height:32 }} />}
                 </>
               ) : (
                 <>
-                  <div style={{ marginBottom:20 }}>
+                  <InlineAdUnit />
+                  <div style={{ marginBottom:20, marginTop:24 }}>
                     <h1 className="tool-title" style={{ fontSize:18, fontWeight:600, color:"#1a1a1a", marginBottom:4 }}>{activeMeta?.label}</h1>
                     <p style={{ fontSize:13, color:"#aaa" }}>{activeMeta?.desc}</p>
                   </div>
-                  <InlineAdUnit />
                   <div style={{ marginTop:24 }}>
                     {toolComponents[activeTool]}
                   </div>
